@@ -12,5 +12,25 @@ public class App {
         ab.Insert(14);
         ab.Insert(19);
         //ab.imprimirArbol();
+
+        System.out.println("Peso del Arbol:" + ab.getPeso() );
+        System.out.println("Altura del Arbol:" + ab.getHeight() );
+        System.out.println("");
+
+        System.out.println("Arbol InOrder:");
+        ab.printOrder();
+        System.out.println("");
+
+        System.out.println("Arbol InOrder con altura:");
+        ab.printOrderWithHeight();
+        System.out.println();
+
+        System.out.println("Arbol InOrder con factor de equilibrio:");
+        ab.printOrderWithBalanceFactor();
+        System.out.println(""); 
+
+
+                
+
     }
 }
