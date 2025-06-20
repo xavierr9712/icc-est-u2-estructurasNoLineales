@@ -1,23 +1,25 @@
 package materia.controllers;
 
-import java.util.List;
+
 
 import materia.models.Node;
 
 public class BinaryTree {
     
     private Node root;
-    private int peso;
-    private List <Node> desquilibrado;
+    private int size;
+   
 
     public BinaryTree() {
         this.root = null;
+        this.size = 0;          
     }
-
+    
     public void Insert(int val){ // 50
                     // null, 50
+        size++;
         root = insertRec(root, val);
-
+        
     }
 
     private Node insertRec(Node padre, int val){
@@ -33,7 +35,7 @@ public class BinaryTree {
             // me voy a insertar en la derecha
             padre.setDe(insertRec(padre.getDe(), val)); 
         }
-        return null;
+        return padre;
     }
     public void  imprimirArbol(){
         imprimirArbolRec(root);
@@ -48,111 +50,162 @@ public class BinaryTree {
         }
 
     }
-    public void printOrder(){
-        printOrderRec(root);
+    public void printArbol() {
+        printArbolRec(root);
+    }
+
+    public void printArbolRec(Node node) {
+        if (node != null) {
+            System.out.println(node.getVal() + " ");
+            printArbolRec(node.getIz());
+            printArbolRec(node.getDe());
+            return;
+        }
+    }
+     public void printPreOrder() {
+        printPreOrderRec(root);
         System.out.println("");
     }
 
-    private void printOrderRec(Node node){
+    private void printPreOrderRec(Node node) {
+        if (node != null) {
+            System.out.print(node.getVal() + " ");
+            printPreOrderRec(node.getIz());
+            printPreOrderRec(node.getDe());
+        }
+    }
+
+    public void printPostOrder() {
+        printPostOrderRec(root);
+        System.out.println("");
+    }
+
+    private void printPostOrderRec(Node node) {
+        if (node != null) {
+            printPostOrderRec(node.getIz());
+            printPostOrderRec(node.getDe());
+            System.out.print(node.getVal() + " ");
+        }
+    }
+
+    public void printInOrder(){
+        printInOrderRec(root);
+        System.out.println("");
+    }
+
+    public void printInOrderRec(Node node){
         if (node != null){
-            printOrderRec(node.getIz());
-            System.out.println(node.getVal() + ", ");
-            printOrderRec(node.getDe());
+            printInOrderRec(node.getIz());
+            System.out.print(node.getVal() + " ");
+            printInOrderRec(node.getDe());
         }
     }
 
 
-    public boolean search(int val){
-        return searchRec(root, val);
+    public void printInOrderWithHeigth(){
+        printInOrderWithHeightRec(root);
+        System.out.println("");
     }
-    private boolean searchRec(Node node, int val){
-        if (node == null){
+
+    public void printInOrderWithHeightRec(Node node){
+        if (node != null){
+            printInOrderWithHeightRec(node.getIz());
+            int height = getHeightRec(node);
+            System.out.print(node.getVal() + "(h="+height+") ");
+            printInOrderWithHeightRec(node.getDe());
+        }
+    }
+
+    public int getBalanceFactor(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return getHeightRec(node.getIz()) - getHeightRec(node.getDe());
+    }
+
+    public void printInOrderWithBalanceFactor() {
+        printInOrderWithBalanceFactorRec(root);
+        System.out.println("");
+    }
+
+    public void printInOrderWithBalanceFactorRec(Node node) {
+        if (node != null) {
+            printInOrderWithBalanceFactorRec(node.getIz());
+            int balanceFactor = getBalanceFactor(node);
+            System.out.print(node.getVal() + "(bf=" + balanceFactor + ") ");
+            printInOrderWithBalanceFactorRec(node.getDe());
+        }
+    }
+
+    public boolean search(int value) {
+        return searchRec(root, value);
+    }
+
+    public boolean searchRec(Node node, int value) {
+        if (node == null) {
             return false;
         }
-        if (node.getVal() == val){
+        if (node.getVal() == value) {
             return true;
         }
-        if (val < node.getVal()){
-            return searchRec(node.getIz(), val);
+        if (value < node.getVal()) {
+            return searchRec(node.getIz(), value);
         } else {
-            return searchRec(node.getDe(), val);
+            return searchRec(node.getDe(), value);
         }
     }
 
-    public  int getHeight(){
+    public int getHeight() {
         return getHeightRec(root);
     }
 
-    private int getHeightRec(Node node){
-        if (node == null){
-            return 0;
+    public int getHeightRec(Node node) {
+        if (node == null) {
+            return 0; 
         }
         int leftHeight = getHeightRec(node.getIz());
         int rightHeight = getHeightRec(node.getDe());
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    public void printOrderWithHeight() {
-        printOrderWithHeightRec(root);
+    public boolean isBalanced() {
+        return isBalancedRec(root);
+    }
+
+    private boolean isBalancedRec(Node node) {
+        if (node == null) {
+            return true;
+        }
+        int balanceFactor = getBalanceFactor(node);
+        if (Math.abs(balanceFactor) > 1) {
+            return false;
+        }
+        return isBalancedRec(node.getIz()) && isBalancedRec(node.getDe());
+    }
+
+    public void getUnbalancedNodesCount() {
+        getUnbalancedNodesCountRec(root);
         System.out.println("");
+    }
+
+    private void getUnbalancedNodesCountRec(Node node) {
+        if (node != null) {
+            int balanceFactor = getBalanceFactor(node);
+            if (Math.abs(balanceFactor) > 1 || Math.abs(balanceFactor) <-1) {
+                System.out.print(node.getVal() + "(bf=" + balanceFactor + ") ");
+            }
+            getUnbalancedNodesCountRec(node.getIz());
+            getUnbalancedNodesCountRec(node.getDe());
+        }
+    }
+
+    public boolean contains(int value) {
+        return searchRec(root, value);
     }
     
-    private void printOrderWithHeightRec(Node node) {
-        if (node != null) {
-            printOrderWithHeightRec(node.getIz());
-            int height = getHeightRec(node);
-            System.out.println("Valor: " + node.getVal() + "(h= " + height + ")");
-            printOrderWithHeightRec(node.getDe());
-        }
-    }
 
-    public int getBalanceFactor() {
-        return getBalanceFactorRec(root);
+    public int getSize() {
+        return size;
     }
-
-    private int getBalanceFactorRec(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return getHeightRec(node.getIz()) - getHeightRec(node.getDe());
-    }
-    public void printBalanceFactor() {
-        printBalanceFactorRec(root);
-        System.out.println("");
-    }
-    private void printBalanceFactorRec(Node node) {
-        if (node != null) {
-            printBalanceFactorRec(node.getIz());
-            int balanceFactor = getBalanceFactorRec(node);
-            System.out.println("Valor: " + node.getVal() + ",(Bf: " + balanceFactor + "),");
-            printBalanceFactorRec(node.getDe());
-        }
-    }
-
-    public Node getRoot() {
-        return root;
-    }
-    public void printOrderWithBalanceFactor() {
-        printOrderWithBalanceFactorRec(root);
-        System.out.println("");
-    }
-    private void printOrderWithBalanceFactorRec(Node node) {
-        if (node != null) {
-            printOrderWithBalanceFactorRec(node.getIz());
-            int balanceFactor = getBalanceFactorRec(node);
-            System.out.println("Valor: " + node.getVal() + ",(Bf: " + balanceFactor + "),");
-            printOrderWithBalanceFactorRec(node.getDe());
-        }
-    }
-    public int getPeso() {
-        return getPesoRec(root);
-    }
-
-    private int getPesoRec(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return 1 + getPesoRec(node.getIz()) + getPesoRec(node.getDe());
-    }   
 
 }

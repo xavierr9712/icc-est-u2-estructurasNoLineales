@@ -13,21 +13,26 @@ public class App {
         ab.Insert(19);
         //ab.imprimirArbol();
 
-        System.out.println("Peso del Arbol:" + ab.getPeso() );
-        System.out.println("Altura del Arbol:" + ab.getHeight() );
+       System.out.println("Peso del Arbol: "+ ab.getSize());
+        System.out.println("Altura del Arbol: " + ab.getHeight());
         System.out.println("");
-
         System.out.println("Arbol InOrder:");
-        ab.printOrder();
-        System.out.println("");
-
-        System.out.println("Arbol InOrder con altura:");
-        ab.printOrderWithHeight();
-        System.out.println();
-
+        ab.printInOrder();
+        System.out.println("Arbol InOrder con alturas:");
+        ab.printInOrderWithHeigth();
         System.out.println("Arbol InOrder con factor de equilibrio:");
-        ab.printOrderWithBalanceFactor();
-        System.out.println(""); 
+        ab.printInOrderWithBalanceFactor();
+        System.out.println("");
+        System.out.println("Arbol está equilibrado: " + ab.isBalanced());
+        System.out.println("Existe el valor 15: " + ab.contains(15));
+        System.out.println("Agregando el valor: "+ 15);
+        ab.Insert(15);
+        System.out.println("Arbol está equilibrado: " + ab.isBalanced());
+        System.out.println("");
+        System.out.println("Arbol InOrder con factor de equilibrio:");
+        ab.printInOrderWithBalanceFactor();
+        System.out.println("Nodos desequilibrados: ");
+        ab.getUnbalancedNodesCount();
 
 
                 
